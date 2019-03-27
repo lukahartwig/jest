@@ -41,6 +41,8 @@ export const runTest = (source: string) => {
     global.describe = circus.describe;
     global.beforeEach = circus.beforeEach;
     global.afterEach = circus.afterEach;
+    global.justBeforeEach = circus.justBeforeEach;
+    global.justAfterEach = circus.justAfterEach;
     global.beforeAll = circus.beforeAll;
     global.afterAll = circus.afterAll;
 

@@ -119,11 +119,14 @@ export const getEachHooksForTest = (test: TestEntry) => {
   const result: {
     beforeEach: Array<Hook>;
     afterEach: Array<Hook>;
-  } = {afterEach: [], beforeEach: []};
+    justBeforeEach: Array<Hook>;
+    justAfterEach: Array<Hook>;
+  } = {afterEach: [], beforeEach: [], justAfterEach: [], justBeforeEach: []};
   let block: DescribeBlock | undefined | null = test.parent;
 
   do {
     const beforeEachForCurrentBlock = [];
+    const justBeforeEachForCurrentBlock = [];
     for (const hook of block.hooks) {
       switch (hook.type) {
         case 'beforeEach':
@@ -132,11 +135,21 @@ export const getEachHooksForTest = (test: TestEntry) => {
         case 'afterEach':
           result.afterEach.push(hook);
           break;
+        case 'justBeforeEach':
+          justBeforeEachForCurrentBlock.push(hook);
+          break;
+        case 'justAfterEach':
+          result.justAfterEach.push(hook);
+          break;
       }
     }
-    // 'beforeEach' hooks are executed from top to bottom, the opposite of the
+    // 'beforeEach' and 'justBeforeEach' hooks are executed from top to bottom, the opposite of the
     // way we traversed it.
     result.beforeEach = [...beforeEachForCurrentBlock, ...result.beforeEach];
+    result.justBeforeEach = [
+      ...justBeforeEachForCurrentBlock,
+      ...result.justBeforeEach,
+    ];
   } while ((block = block.parent));
   return result;
 };

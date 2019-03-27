@@ -8,27 +8,31 @@
 import circus from '../';
 import {HookType} from '../types';
 
-describe.each(['beforeEach', 'beforeAll', 'afterEach', 'afterAll'])(
-  '%s hooks error throwing',
-  (fn: HookType) => {
-    test.each([
-      ['String'],
-      [1],
-      [[]],
-      [{}],
-      [Symbol('hello')],
-      [true],
-      [null],
-      [undefined],
-    ])(
-      `${fn} throws an error when %p is provided as a first argument to it`,
-      el => {
-        expect(() => {
-          circus[fn](el);
-        }).toThrowError(
-          'Invalid first argument. It must be a callback function.',
-        );
-      },
-    );
-  },
-);
+describe.each([
+  'beforeEach',
+  'beforeAll',
+  'afterEach',
+  'afterAll',
+  'justBeforeEach',
+  'justAfterEach',
+])('%s hooks error throwing', (fn: HookType) => {
+  test.each([
+    ['String'],
+    [1],
+    [[]],
+    [{}],
+    [Symbol('hello')],
+    [true],
+    [null],
+    [undefined],
+  ])(
+    `${fn} throws an error when %p is provided as a first argument to it`,
+    el => {
+      expect(() => {
+        circus[fn](el);
+      }).toThrowError(
+        'Invalid first argument. It must be a callback function.',
+      );
+    },
+  );
+});

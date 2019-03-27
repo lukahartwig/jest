@@ -36,6 +36,8 @@ unhandledErrors: 0"
 exports[`simple test 1`] = `
 "start_describe_definition: describe
 add_hook: beforeEach
+add_hook: justBeforeEach
+add_hook: justAfterEach
 add_hook: afterEach
 add_test: one
 add_test: two
@@ -46,16 +48,24 @@ run_describe_start: describe
 test_start: one
 hook_start: beforeEach
 hook_success: beforeEach
+hook_start: justBeforeEach
+hook_success: justBeforeEach
 test_fn_start: one
 test_fn_success: one
+hook_start: justAfterEach
+hook_success: justAfterEach
 hook_start: afterEach
 hook_success: afterEach
 test_done: one
 test_start: two
 hook_start: beforeEach
 hook_success: beforeEach
+hook_start: justBeforeEach
+hook_success: justBeforeEach
 test_fn_start: two
 test_fn_success: two
+hook_start: justAfterEach
+hook_success: justAfterEach
 hook_start: afterEach
 hook_success: afterEach
 test_done: two

@@ -98,7 +98,12 @@ const _runTest = async (test: TestEntry): Promise<void> => {
     return;
   }
 
-  const {afterEach, beforeEach} = getEachHooksForTest(test);
+  const {
+    afterEach,
+    beforeEach,
+    justAfterEach,
+    justBeforeEach,
+  } = getEachHooksForTest(test);
 
   for (const hook of beforeEach) {
     if (test.errors.length) {
@@ -109,7 +114,20 @@ const _runTest = async (test: TestEntry): Promise<void> => {
     await _callCircusHook({hook, test, testContext});
   }
 
+  for (const hook of justBeforeEach) {
+    if (test.errors.length) {
+      // If any of the just before hooks failed already, we don't run any
+      // hooks after that.
+      break;
+    }
+    await _callCircusHook({hook, test, testContext});
+  }
+
   await _callCircusTest(test, testContext);
+
+  for (const hook of justAfterEach) {
+    await _callCircusHook({hook, test, testContext});
+  }
 
   for (const hook of afterEach) {
     await _callCircusHook({hook, test, testContext});

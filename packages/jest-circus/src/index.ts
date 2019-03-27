@@ -122,10 +122,14 @@ const _addHook = (
 // Hooks have to pass themselves to the HOF in order for us to trim stack traces.
 const beforeEach: THook = (fn, timeout) =>
   _addHook(fn, 'beforeEach', beforeEach, timeout);
+const justBeforeEach: THook = (fn, timeout) =>
+  _addHook(fn, 'justBeforeEach', beforeEach, timeout);
 const beforeAll: THook = (fn, timeout) =>
   _addHook(fn, 'beforeAll', beforeAll, timeout);
 const afterEach: THook = (fn, timeout) =>
   _addHook(fn, 'afterEach', afterEach, timeout);
+const justAfterEach: THook = (fn, timeout) =>
+  _addHook(fn, 'justAfterEach', justAfterEach, timeout);
 const afterAll: THook = (fn, timeout) =>
   _addHook(fn, 'afterAll', afterAll, timeout);
 
@@ -202,5 +206,7 @@ export = {
   beforeEach,
   describe,
   it,
+  justAfterEach,
+  justBeforeEach,
   test,
 };

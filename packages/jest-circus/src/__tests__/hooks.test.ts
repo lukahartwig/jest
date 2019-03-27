@@ -72,3 +72,33 @@ test('beforeAll is exectued correctly', () => {
 
   expect(stdout).toMatchSnapshot();
 });
+
+test('justBeforeEach is executed after all before each hooks but before test in current/child describe blocks', () => {
+  const {stdout} = runTest(`
+    describe('describe', () => {
+      justBeforeEach(() => console.log('> describe justBeforeEach'));
+      beforeEach(() => console.log('> describe beforeEach'));
+      test('one', () => {});
+      test('two', () => {});
+      describe('2nd level describe', () => {
+        beforeEach(() => console.log('> 2nd level describe beforeEach'));
+        test('2nd level test', () => {});
+
+        describe('3rd level describe', () => {
+          test('3rd level test', () => {});
+          test('3rd level test#2', () => {});
+        });
+      });
+    })
+
+    describe('2nd describe', () => {
+      justBeforeEach(() => {
+        console.log('> 2nd describe justBeforeEach that throws')
+        throw new Error('alabama');
+      });
+      test('2nd describe test', () => {});
+    })
+  `);
+
+  expect(stdout).toMatchSnapshot();
+});
